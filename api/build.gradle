@@ -1,0 +1,10 @@
+apply plugin: 'war'
+
+jar {
+	baseName = 'api'
+	version = '0.0.1-SNAPSHOT'
+}
+
+dependencies {
+	compile project(':common')
+}

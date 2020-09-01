@@ -1,0 +1,72 @@
+buildscript {
+	ext {
+		springBootVersion = '2.3.3.RELEASE'
+	}
+	repositories {
+		mavenCentral()
+		google()
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+		classpath('io.spring.gradle:dependency-management-plugin:1.0.10.RELEASE')
+		classpath('com.google.gms:google-services:4.3.2')
+	}
+}
+
+allprojects {
+	apply plugin: 'idea'
+	apply plugin: 'eclipse'
+	
+	group = 'com.unli.cogba'
+	version = '0.0.1-SNAPSHOT'
+	
+	eclipse.project {
+		natures 'org.eclipse.buildship.core.gradleprojectnature'
+	}
+}
+
+subprojects {
+	apply plugin: 'java'
+	apply plugin: 'eclipse-wtp'
+	apply plugin: 'org.springframework.boot'
+	apply plugin: 'io.spring.dependency-management'
+	
+	sourceCompatibility = '1.8'
+	
+	repositories {
+		mavenLocal()
+		mavenCentral()
+		google()
+	}
+	
+	task initSourceFolders {
+	    sourceSets*.java.srcDirs*.each {
+	        if( !it.exists() ) {
+	            it.mkdirs()
+	        }
+	    }
+	 
+	    sourceSets*.resources.srcDirs*.each {
+	        if( !it.exists() ) {
+	            it.mkdirs()
+	        }
+	    }
+	}
+	
+	dependencies {
+		implementation 'org.springframework.boot:spring-boot-starter-aop'
+		implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+		implementation 'org.springframework.boot:spring-boot-starter-web'
+		implementation 'org.springframework.boot:spring-boot-starter-security'
+		implementation 'org.springframework.boot:spring-boot-devtools'
+		implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+		compileOnly 'org.projectlombok:lombok'
+		annotationProcessor 'org.projectlombok:lombok'
+	}
+	
+	configurations {
+		compileOnly {
+			extendsFrom annotationProcessor
+		}
+	}
+}
